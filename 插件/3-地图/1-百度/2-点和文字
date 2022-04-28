@@ -1,0 +1,5 @@
+<!-- 标注 -->
+<bm-marker :position="circlePath.center" :dragging="true" animation="BMAP_ANIMATION_BOUNCE">
+	<!-- 文字 -->
+	  <bm-label content="一段文字" :labelStyle="{color: 'red', fontSize : '24px'}" :offset="{width: -35, height: 30}"/>
+</bm-marker>

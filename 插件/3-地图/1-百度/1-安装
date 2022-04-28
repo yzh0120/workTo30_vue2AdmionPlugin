@@ -1,0 +1,9 @@
+如何在 Vue 中使用百度地图
+https://blog.csdn.net/smily77369/article/details/108616248
+
+npm install vue-baidu-map --save
+
+
+
+中文文档
+https://dafrok.github.io/vue-baidu-map/#/zh/index
