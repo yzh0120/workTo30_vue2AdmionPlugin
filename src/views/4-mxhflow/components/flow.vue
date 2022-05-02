@@ -1,9 +1,10 @@
 <template>
   <div class="box">
     <formAlert
-      :nodeObjToFormAlert="nodeObjToFormAlert"
+      :deepCloneNodeData="deepCloneNodeData"
       :alertToFormAlert="alertToFormAlert"
-      :lineObjToFormAlert="lineObjToFormAlert"
+      :deepCloneLineData="deepCloneLineData"
+      :parentData="$data"
       ID="workFlow"
     ></formAlert>
 
@@ -34,12 +35,12 @@ export default {
 
       nodeType: "", //点击节点时的类型   审批节点 传阅节点
       nodeData: {}, //节点数据
-      nodeObjToFormAlert: {}, //是一个对象 包含节点数据
-      // middleNodeData: {}, //中间的节点数据  用于克隆
+      deepCloneNodeData: {}, //是一个对象 包含节点数据
+      // deepCloneNodeData: {}, //中间的节点数据  用于克隆
 
       lineData: {}, //线条数据
-      lineObjToFormAlert: {}, //是一个对象 包含线条数据
-      // middleLineData: {}, //中间的线条数据
+      deepCloneLineData: {}, //是一个对象 包含线条数据
+      // deepCloneLineData: {}, //中间的线条数据
     };
   },
   methods: {
@@ -84,29 +85,28 @@ export default {
       openNode: function (node) {
         that.nodeType = node.type;
         that.nodeData = node;
-
-        // console.log(node, "node");
+        //结束节点 没有弹窗
         if (node.type != "endround") {
-          if (node.type == "confluencenode") {
-            that.nodeData.isConfluencenode = true;
-          } else {
-            that.nodeData.isConfluencenode = false;
-          }
+          //暂不清楚这一段什么意思
+          // if (node.type == "confluencenode") {
+          //   that.nodeData.isConfluencenode = true;
+          // } else {
+          //   that.nodeData.isConfluencenode = false;
+          // }
+          //显示弹窗
           that.alertToFormAlert.showNode = !that.alertToFormAlert.showNode;
+          //node弹窗有多个;默认 1
           that.alertToFormAlert.activeName = "1";
-          that.nodeObjToFormAlert = {
-            nodeData: that.nodeData,
-            middleNodeData: that.$fn.deepClone(that.nodeData),
-          };
+          //这是传递给node组件的数据
+          that.deepCloneNodeData = that.$fn.deepClone(that.nodeData);
         }
       },
       openLine: function (line) {
         that.lineData = line;
+        //显示弹窗
         that.alertToFormAlert.showLine = !that.alertToFormAlert.showLine;
-        that.lineObjToFormAlert = {
-          lineData: that.lineData,
-          middleLineData: that.$fn.deepClone(line), //that.middleLineData,
-        };
+        //这是传递给line组件的数据
+        that.deepCloneLineData = that.$fn.deepClone(line);
       },
     });
 

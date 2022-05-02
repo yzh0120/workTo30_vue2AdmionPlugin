@@ -9,11 +9,7 @@
     >
       <template #title>
         <div class="pop_top_left">
-          节点信息设置-【{{
-            nodeObjToFormAlert.middleNodeData
-              ? nodeObjToFormAlert.middleNodeData.name
-              : ""
-          }}】
+          节点信息设置-【{{ deepCloneNodeData ? deepCloneNodeData.name : "" }}】
         </div>
       </template>
 
@@ -25,14 +21,11 @@
         >
           <!-- 基本配置页面---------------------------------------------------------------------------- -->
           <el-tab-pane label="基本配置" name="1" v-if="showFn('基本配置')">
-            <tabs1
-              :formProp="nodeObjToFormAlert.middleNodeData"
-              ref="tabs1"
-            ></tabs1>
+            <tabs1 :deepCloneNodeData="deepCloneNodeData" ref="tabs1"></tabs1>
           </el-tab-pane>
           <!-- 审核者页面---------------------------------------------------------------------------- -->
           <el-tab-pane label="审核者" name="2" v-if="showFn('审核者')">
-            <tabs2 :formProp="nodeObjToFormAlert.middleNodeData"></tabs2>
+            <tabs2 :deepCloneNodeData="deepCloneNodeData"></tabs2>
           </el-tab-pane>
         </el-tabs>
       </div>
@@ -55,9 +48,9 @@
       </template>
 
       <line1
-        :formProp="lineObjToFormAlert.middleLineData"
+        :deepCloneLineData="deepCloneLineData"
         ref="line1"
-        v-if="lineObjToFormAlert"
+        v-if="deepCloneLineData"
       ></line1>
 
       <template #footer>
@@ -85,15 +78,20 @@ export default {
     tabs2,
     line1,
   },
-  // props: ["alertToFormAlert", "nodeObjToFormAlert", "ID", "lineObjToFormAlert"],
+  // props: ["alertToFormAlert", "deepCloneNodeData", "ID", "deepCloneLineData"],
   props: {
+    //parentData
+    parentData: {
+      type: Object,
+      default: () => {},
+    },
     //节点数据对象
-    nodeObjToFormAlert: {
+    deepCloneNodeData: {
       type: Object,
       default: () => {},
     },
     //连线数据对象
-    lineObjToFormAlert: {
+    deepCloneLineData: {
       type: Object,
       default: () => {},
     },
@@ -128,9 +126,12 @@ export default {
     },
     //连线取消
     lineCancel() {
-      this.lineObjToFormAlert.middleLineData = this.$fn.deepClone(
-        this.lineObjToFormAlert.lineData
-      );
+      // this.deepCloneLineData = this.$fn.deepClone(this.parentData.lineData);
+      // 重置 deepCloneLineData
+      for (let key of Object.keys(this.parentData.lineData)) {
+        this.deepCloneLineData[key] = this.parentData.lineData[key];
+      }
+      //弹窗隐藏
       this.alertToFormAlert.showLine = !this.alertToFormAlert.showLine;
     },
     //连线确认
@@ -138,29 +139,38 @@ export default {
       let line1 = this.$refs.line1.$refs.form;
       line1.validate((valid) => {
         if (valid) {
-          for (let keys of Object.keys(this.lineObjToFormAlert.lineData)) {
-            for (let keyss of Object.keys(
-              this.lineObjToFormAlert.middleLineData
-            )) {
-              if (keys == keyss) {
-                this.lineObjToFormAlert.lineData[keys] =
-                  this.lineObjToFormAlert.middleLineData[keyss];
-              }
-            }
+          // for (let keys of Object.keys(this.deepCloneLineData.lineData)) {
+          //   for (let keyss of Object.keys(
+          //     this.deepCloneLineData.deepCloneLineData
+          //   )) {
+          //     if (keys == keyss) {
+          //       this.deepCloneLineData.lineData[keys] =
+          //         this.deepCloneLineData.deepCloneLineData[keyss];
+          //     }
+          //   }
+          // }
+
+          //将 弹窗的值 赋值给 lineData
+          for (let key of Object.keys(this.deepCloneLineData)) {
+            this.parentData.lineData[key] = this.deepCloneLineData[key];
           }
 
-          this.alertToFormAlert.showLine = !this.alertToFormAlert.showLine;
+          //通过id更新
           $(`#${this.ID}`).lrworkflowSet("updateLineName", {
-            lineId: this.lineObjToFormAlert.lineData.id,
+            lineId: this.parentData.lineData.id,
           });
+          //弹窗隐藏
+          this.alertToFormAlert.showLine = !this.alertToFormAlert.showLine;
         }
       });
     },
     //节点取消
     nodeCancel() {
-      this.nodeObjToFormAlert.middleNodeData = this.$fn.deepClone(
-        this.nodeObjToFormAlert.nodeData
-      );
+      // this.deepCloneNodeData = this.$fn.deepClone(this.parentData.nodeData);
+      // 重置 deepCloneNodeData
+      for (let key of Object.keys(this.parentData.nodeData)) {
+        this.deepCloneNodeData[key] = this.parentData.nodeData[key];
+      }
       this.alertToFormAlert.showNode = !this.alertToFormAlert.showNode;
     },
     //节点确认
@@ -168,20 +178,26 @@ export default {
       let tabs1 = this.$refs.tabs1.$refs.form;
       tabs1.validate((valid) => {
         if (valid) {
-          for (let keys of Object.keys(this.nodeObjToFormAlert.nodeData)) {
-            for (let keyss of Object.keys(
-              this.nodeObjToFormAlert.middleNodeData
-            )) {
-              if (keys == keyss) {
-                this.nodeObjToFormAlert.nodeData[keys] =
-                  this.nodeObjToFormAlert.middleNodeData[keyss];
-              }
-            }
-          }
-          $(`#${this.ID}`).lrworkflowSet("updateNodeName", {
-            nodeId: this.nodeObjToFormAlert.nodeData.id,
-          });
+          // for (let keys of Object.keys(this.deepCloneNodeData.nodeData)) {
+          //   for (let keyss of Object.keys(
+          //     this.deepCloneNodeData.deepCloneNodeData
+          //   )) {
+          //     if (keys == keyss) {
+          //       this.deepCloneNodeData.nodeData[keys] =
+          //         this.deepCloneNodeData.deepCloneNodeData[keyss];
+          //     }
+          //   }
+          // }
 
+          //将 弹窗的值 赋值给 nodeData
+          for (let key of Object.keys(this.deepCloneNodeData)) {
+            this.parentData.nodeData[key] = this.deepCloneNodeData[key];
+          }
+          //通过id更新
+          $(`#${this.ID}`).lrworkflowSet("updateNodeName", {
+            nodeId: this.parentData.nodeData.id,
+          });
+          //控制弹窗
           this.alertToFormAlert.showNode = !this.alertToFormAlert.showNode;
         }
       });
@@ -190,8 +206,8 @@ export default {
     showFn(name) {
       return true;
       // if (
-      //   this.nodeObjToFormAlert.middleNodeData &&
-      //   this.nodeObjToFormAlert.middleNodeData.type == "startround"
+      //   this.deepCloneNodeData.deepCloneNodeData &&
+      //   this.deepCloneNodeData.deepCloneNodeData.type == "startround"
       // ) {
       //   //开始节点
       //   if (

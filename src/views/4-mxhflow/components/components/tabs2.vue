@@ -1,11 +1,11 @@
 <template>
-  <div>{{ formProp }}</div>
+  <div>{{ deepCloneNodeData }}</div>
 </template>
 
 <script>
 export default {
   props: {
-    formProp: {
+    deepCloneNodeData: {
       type: Object,
       default: () => {},
     },
