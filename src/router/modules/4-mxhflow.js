@@ -18,6 +18,15 @@ export default {
                 title: '基础mxhflow',
                 icon: "biaodanzujian-biaoge",
             }
+        },
+        {
+            path: 'preLook',
+            name: 'mxhflow-preLook',
+            component: () => import(/* webpackChunkName: "mxhflow-preLook" */ "@/views/4-mxhflow/2-preLook.vue"),
+            meta: {
+                title: '预览',
+                icon: "biaodanzujian-biaoge",
+            }
         }
     ]
 }

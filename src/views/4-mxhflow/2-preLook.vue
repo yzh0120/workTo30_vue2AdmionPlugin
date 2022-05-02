@@ -12,7 +12,7 @@
       class="flowModal"
     >
       <div class="middle3">
-        <workFlow :node_line_data.sync="shceme"></workFlow>
+        <workFlow :data.sync="shceme"></workFlow>
       </div>
 
       <template #footer>
@@ -48,17 +48,23 @@ export default {
           // },
         ],
         nodes: [
-          {
-            height: 52,
-            id: "898e2f7b-3dd7-4cdf-8de0-b950dea0eb9c",
-            left: 704,
-            name: "结束",
-            top: 385,
-            type: "endround",
-            width: 52,
-          },
+          // {
+          // 	height: 52
+          // 	id: "898e2f7b-3dd7-4cdf-8de0-b950dea0eb9c"
+          // 	left: 704
+          // 	name: "结束"
+          // 	top: 385
+          // 	type: "endround"
+          // 	width: 52
+          // }
         ],
       },
+      // alertData: {
+      //   flag: false,
+      //   width: "800px",
+      //   height: "600px",
+      //   title: "基础弹窗",
+      // },
       flag: false,
     };
   },

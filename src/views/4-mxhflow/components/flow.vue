@@ -20,7 +20,14 @@ import "@/assets/workFlow/index.js";
 import formAlert from "./formAlert";
 export default {
   name: "workFlow",
-  props: ["data"],
+  // props: ["data"],
+  props: {
+    //流程的节点和线的数据
+    node_line_data: {
+      type: Object,
+      default: () => {},
+    },
+  },
   components: {
     formAlert,
   },
@@ -111,9 +118,9 @@ export default {
     });
 
     this.$nextTick(() => {
-      if (this.data) {
-        // console.log(this.data,"this.data")
-        $("#workFlow").lrworkflowSet("set", { data: this.data });
+      if (this.node_line_data) {
+        //设置数据
+        $("#workFlow").lrworkflowSet("set", { data: this.node_line_data });
       }
     });
   },

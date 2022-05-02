@@ -5,6 +5,9 @@
       <el-form-item label="节点名称">
         <el-input v-model="deepCloneNodeData.name"></el-input>
       </el-form-item>
+      <el-form-item label="自定义">
+        <el-input v-model="deepCloneNodeData.selfField"></el-input>
+      </el-form-item>
     </el-form>
   </div>
 </template>
