@@ -7,7 +7,7 @@ export default {
     component:  layout,
     meta: {
         title: '地图',
-        icon: 'e62a;',
+        icon: "biaodanzujian-biaoge",
     },
     children: [
         {

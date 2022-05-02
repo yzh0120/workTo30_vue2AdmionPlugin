@@ -41,9 +41,7 @@ module.exports = {
 			            },
 					}
 
-		} else { // 为非生产环境修改配置...
-
-		}
+		} 
 		config.resolve = { //配置别名和默认后缀
 			extensions: ['.js', '.json', '.vue'], //配置文件后缀 import demo from "index", 如果没有.js 就找.json ,然后.vue
 			alias: { //配置解析别名,resolve遇到某一个参数是/开头就不会拼接绝对路径
@@ -76,6 +74,12 @@ module.exports = {
 			args[0].title = "保函业务操作系统";
 			return args;
 		})
+		config.plugin('provide').use(webpack.ProvidePlugin, [{
+			$: 'jquery',
+			jquery: 'jquery',
+			jQuery: 'jquery',
+			'window.jQuery': 'jquery'
+		  }])
 		// 生产环境，开启js\css压缩
 		if (process.env.NODE_ENV === 'production') {
 			/* gzip压缩 */
